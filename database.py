@@ -10,7 +10,10 @@ class DataBase:
         self.connect_init()
 
     def connect_init(self):
-        self.client = pymongo.MongoClient("mongodb+srv://LanceLiang:1352040930database@lanceliang-lktmq.azure."
+        # 下面这个是哪个数据库来着？？？
+        # self.client = pymongo.MongoClient("mongodb+srv://LanceLiang:1352040930database@lanceliang-lktmq.azure."
+        #                                   "mongodb.net/test?retryWrites=true&w=majority")
+        self.client = pymongo.MongoClient("mongodb+srv://lanceliang:1352040930database@lanceliang-9kkx3.azure."
                                           "mongodb.net/test?retryWrites=true&w=majority")
         # self.client = pymongo.MongoClient()
         self.db = self.client.novel_publisher
