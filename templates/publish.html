@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Publish New Chapter</title>
+</head>
+<body>
+<center>
+    <form action="/publish" method="post">
+        密码：<input type="password" name="password">
+        <br>
+        书名：<select name="bookname">
+        <option value="">(新建)</option>
+        {% for i in booknames %}
+        <option value="{{i}}">{{i}}</option>
+        {% endfor %}
+    </select>
+        <input type="text" name="bookname_new">
+        <br>
+        章节：<select name="chaptername">
+        <option value="">(新建)</option>
+        {% for i in chapternames %}
+        <option value="{{i}}">{{i}}</option>
+        {% endfor %}
+    </select>
+        <input type="text" name="chaptername_new">
+        <br>
+        URL：<input type="text" name="url">
+        <br>
+        <input type="submit" value="确定">
+    </form>
+</center>
+</body>
+</html>

@@ -10,9 +10,9 @@ class DataBase:
         self.connect_init()
 
     def connect_init(self):
-        # self.client = pymongo.MongoClient("mongodb+srv://LanceLiang:1352040930database@lanceliang-lktmq.azure."
-        #                                   "mongodb.net/test?retryWrites=true&w=majority")
-        self.client = pymongo.MongoClient()
+        self.client = pymongo.MongoClient("mongodb+srv://LanceLiang:1352040930database@lanceliang-lktmq.azure."
+                                          "mongodb.net/test?retryWrites=true&w=majority")
+        # self.client = pymongo.MongoClient()
         self.db = self.client.novel_publisher
         self.col = self.db.novel_publisher
 
@@ -28,11 +28,14 @@ class DataBase:
         # self.col.insert_one({'created': True})
 
     def get_books(self):
-        data = list(self.col.find({}, {'bookname': 1, '_id': 0}))
+        data = list(self.col.distinct('bookname'))
         return data
 
-    def get_chapters(self, bookname: str):
-        data = list(self.col.find({'bookname': bookname}, {'bookname': 1, 'chaptername': 1, '_id': 0}))
+    def get_chapters(self, bookname=None):
+        if bookname is None:
+            data = list(self.col.distinct('chaptername'))
+        else:
+            data = list(self.col.find({'bookname': bookname}, {'bookname': 1, 'chaptername': 1, '_id': 0}))
         return data
 
     def publish(self, bookname: str, chaptername: str, url: str):
