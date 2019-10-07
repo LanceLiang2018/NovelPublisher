@@ -25,7 +25,8 @@ def index():
         md = make_line(md, '- [%s](/%s)\n' % (bookname, bookname))
     md = make_line(md, '[更新章节](/publish)')
     html = markdown.markdown(md)
-    return html
+    # return html
+    return render_template("reader.html", contain=html)
 
 
 @app.route('/publish', methods=['GET', 'POST'])
@@ -67,7 +68,8 @@ def get_chapters(bookname: str):
     for chapter in chapters:
         md = make_line(md, '- [%s](/%s/%s)' % (chapter['chaptername'],
                                                chapter['bookname'], chapter['chaptername']))
-    return markdown.markdown(md)
+    md = markdown.markdown(md)
+    return render_template("reader.html", contain=md)
 
 
 @app.route('/<string:bookname>/<string:chaptername>')
