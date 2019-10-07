@@ -79,7 +79,8 @@ def get_content(bookname, chaptername):
     try:
         raw = requests.get(content).text
         md = markdown.markdown(raw)
-        return md
+        # return md
+        return render_template("reader.html", contain=md)
     except Exception as e:
         return str(e)
 
