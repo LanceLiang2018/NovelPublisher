@@ -82,7 +82,8 @@ def get_content(bookname, chaptername):
         raw = requests.get(content).text
         md = markdown.markdown(raw)
         # return md
-        return render_template("reader.html", contain=md)
+        comments = 'https://lance-chatroom.herokuapp.com/frame/%s_%s' % (bookname, chaptername)
+        return render_template("reader_frame.html", contain=md, frame_src=comments)
     except Exception as e:
         return str(e)
 
