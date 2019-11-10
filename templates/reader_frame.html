@@ -9,7 +9,7 @@
       <script src="https://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <title>Reader</title>
+    <title>{{title}}</title>
     <style>
         body {
             background-color: #eee;
@@ -110,16 +110,6 @@
             setInterval(gettime,1000);
             window.reading_prog=100;
             window.drag_counter=0;
-            $(window)
-                .on('beforeunload',function() {
-                    if(reading_prog<98)
-                        return '离开此页后，当前的文本也将关闭';
-                })
-                .on('keydown',function(event) {
-                    if(event.keyCode===36 || event.keyCode===35) // home & end
-                        if($(document).height()>10*document.body.clientHeight && !confirm('注意：您按下了 '+event.key+' 键。'))
-                            event.preventDefault();
-                });
             $('body')
                 .on('dragenter',function() {
                     window.drag_counter++;
@@ -194,10 +184,21 @@
     </div>
     
     <div id="light"></div>
-    
+
     <div id="container">
+        <div id="guidance">
+        {{guidance|safe}}
         {{contain|safe}}
+        </div>
     <iframe id="iframeContent" name="iframeContent" frameborder="0" src="{{frame_src}}"></iframe>
+        <script type="text/javascript">
+        function reinitIframe() {
+            var iframe = document.getElementById("iframeContent");
+            var container = document.getElementById("guidance");
+            iframe.width = container.clientWidth||container.offsetWidth;
+        }
+        window.setInterval("reinitIframe()", 200);
+        </script>
     </div>
     <div class="x-ray" id="x-top" style="margin-top: -4px;"></div>
     <div class="x-ray" id="x-bottom"></div>
@@ -239,6 +240,9 @@
           <button type="button" class="btn btn-primary" onclick="load()">加载</button>
         </div>
     </div></div></div>
-</body>
-<!--<frameset><frame src="{{frame_src}}"></frameset>-->
+<script type="text/javascript">
+window.alert = function() {
+return false;
+}
+</script>
 </html>

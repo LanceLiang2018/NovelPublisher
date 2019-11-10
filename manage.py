@@ -63,29 +63,35 @@ def publish():
 
 @app.route('/<string:bookname>')
 def get_chapters(bookname: str):
-    md = '# %s\n' % bookname
+    path = "[%s](%s)>%s\n" % ("首页", "/", bookname)
+    title = "%s - MyNovelPublisher" % (bookname, )
+    md = path + '# %s\n' % bookname
     chapters = db.get_chapters(bookname)
     for chapter in chapters:
         md = make_line(md, '- [%s](/%s/%s)' % (chapter['chaptername'],
                                                chapter['bookname'], chapter['chaptername']))
     md = markdown.markdown(md)
-    return render_template("reader.html", contain=md)
+    return render_template("reader.html", contain=md, title=title)
 
 
 @app.route('/<string:bookname>/<string:chaptername>')
 def get_content(bookname, chaptername):
-    md = '# %s\n## %s\n' % (bookname, chaptername)
+    path = "[%s](%s)>[%s](%s)>%s\n" % ("首页", "/", bookname, "/%s" % bookname, chaptername)
+    md = path + '# %s\n## %s\n' % (bookname, chaptername)
+    title = "%s/%s - MyNovelPublisher" % (bookname, chaptername)
     content = db.get_content(bookname, chaptername)
     if content is None:
         return markdown.markdown(md)
     try:
         raw = requests.get(content).text
         md = markdown.markdown(raw)
+        path = markdown.markdown(path)
         # return md
         comments = 'https://lance-chatroom.herokuapp.com/frame/%s_%s' % (bookname, chaptername)
-        return render_template("reader_frame.html", contain=md, frame_src=comments)
+        return render_template("reader_frame.html", contain=md, frame_src=comments, guidance=path, title=title)
     except Exception as e:
         return str(e)
+
 
 @app.route('/debug_clear_all')
 def clear_all():
